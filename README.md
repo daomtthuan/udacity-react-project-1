@@ -1,2 +1,3 @@
-# udacity-react-project-1
-Udacity React project 1 - MyReads: A Book Tracking App
+# Udacity - React - Project 1
+
+## MyReads: A Book Tracking App
