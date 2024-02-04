@@ -15,7 +15,9 @@ export default function useBook({ data, ...props }: BookProps) {
 
   const onClickMoveTo = useCallback<(id: string) => MouseEventHandler<HTMLAnchorElement> | undefined>(
     (shelfId) => {
-      const bookId = book.id;
+      if (shelfId === book.shelf) {
+        return undefined;
+      }
 
       if ('setBookShelves' in props && 'setBooks' in props) {
         const { setBookShelves, setBooks } = props;
@@ -28,17 +30,17 @@ export default function useBook({ data, ...props }: BookProps) {
               loading.show();
 
               const bookShelves = await bookApi.update({
-                id: bookId,
+                id: book.id,
                 shelf: shelfId,
               });
 
-              const book = await bookApi.get(bookId);
+              const updatedBook = await bookApi.get(book.id);
 
               setBookShelves(() => bookShelves);
               setBooks((prev) => {
-                const index = prev.findIndex((book) => book.id === bookId);
+                const index = prev.findIndex((book) => book.id === updatedBook.id);
                 if (index >= 0) {
-                  prev[index] = book;
+                  prev[index] = updatedBook;
                 }
 
                 return prev;
@@ -52,12 +54,14 @@ export default function useBook({ data, ...props }: BookProps) {
 
       return undefined;
     },
-    [book.id, loading, props],
+    [book.id, book.shelf, loading, props],
   );
 
   const onClickAddTo = useCallback<(id: string) => MouseEventHandler<HTMLAnchorElement> | undefined>(
     (shelfId) => {
-      const bookId = book.id;
+      if (shelfId === book.shelf) {
+        return undefined;
+      }
 
       if ('setBookShelves' in props && 'setBooks' in props) {
         return undefined;
@@ -71,20 +75,20 @@ export default function useBook({ data, ...props }: BookProps) {
             loading.show();
 
             await bookApi.update({
-              id: bookId,
+              id: book.id,
               shelf: shelfId,
             });
 
-            const book = await bookApi.get(bookId);
+            const updatedBook = await bookApi.get(book.id);
 
-            setBook(() => book);
+            setBook(() => updatedBook);
           } finally {
             loading.hide();
           }
         })();
       };
     },
-    [book.id, loading, props],
+    [book.id, book.shelf, loading, props],
   );
 
   return useMemo(

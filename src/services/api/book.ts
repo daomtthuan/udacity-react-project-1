@@ -1,5 +1,5 @@
 import client from './_client';
-import { BookApiGetResponse, BookApiListResponse, BookApiSearchRequest, BookApiSearchResponse, BookApiUpdateRequest, BookApiUpdateResponse } from './book.type';
+import { BookApiGetResponse, BookApiListResponse, BookApiSearchResponse, BookApiUpdateRequest, BookApiUpdateResponse } from './book.type';
 
 const bookApi = {
   list: async () => {
@@ -30,11 +30,14 @@ const bookApi = {
     return data;
   },
 
-  search: async (request: BookApiSearchRequest) => {
+  search: async (query: string) => {
     const { data } = await client.request<BookApiSearchResponse>({
       method: 'post',
       url: 'search',
-      data: request,
+      data: {
+        query,
+        maxResults: 20,
+      },
     });
 
     if ('error' in data.books) {

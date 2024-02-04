@@ -6,7 +6,7 @@ type Book = {
     smallThumbnail: string;
     thumbnail: string;
   };
-  shelf: string;
+  shelf?: string;
 };
 
 export default Book;

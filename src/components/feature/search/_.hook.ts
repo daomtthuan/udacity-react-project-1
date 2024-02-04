@@ -8,13 +8,12 @@ import shelfApi from '~services/api/shelf';
 import Book from '~types/model/book.type';
 import Shelf from '~types/model/shelf.type';
 
-const MAX_RESULTS = 50;
-
 export default function useSearch() {
   const loading = useLoading();
 
-  const [shelves, setShelves] = useState<Shelf[]>([]);
   const [books, setBooks] = useState<Book[]>([]);
+  const [shelves, setShelves] = useState<Shelf[]>([]);
+  const [searchedBooks, setSearchedBooks] = useState<Book[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   const [query, setQuery] = useDebounceValue<string>('', 500);
@@ -31,9 +30,9 @@ export default function useSearch() {
       try {
         loading.show();
 
-        const [shelves] = await Promise.all([shelfApi.list()]);
-
+        const [shelves, books] = await Promise.all([shelfApi.list(), bookApi.list()]);
         setShelves(() => shelves);
+        setBooks(() => books);
       } finally {
         loading.hide();
       }
@@ -45,18 +44,24 @@ export default function useSearch() {
       if (query) {
         try {
           loading.show();
-          const books = await bookApi.search({
-            query,
-            maxResults: MAX_RESULTS,
-          });
+          const searchedBooks = await bookApi.search(query);
 
-          setBooks(() => books ?? []);
-          setIsEmpty(() => !books);
+          setSearchedBooks(() =>
+            (searchedBooks ?? []).map((searchedBook) => {
+              const book = books.find((book) => searchedBook.id === book.id);
+              if (book) {
+                return book;
+              }
+
+              return searchedBook;
+            }),
+          );
+          setIsEmpty(() => !searchedBooks);
         } finally {
           loading.hide();
         }
       } else {
-        setBooks(() => []);
+        setSearchedBooks(() => []);
         setIsEmpty(() => false);
       }
     })();
@@ -66,13 +71,13 @@ export default function useSearch() {
     () => ({
       states: {
         shelves,
-        books,
+        searchedBooks,
         isEmpty,
       },
       events: {
         onChangeSearch,
       },
     }),
-    [books, isEmpty, onChangeSearch, shelves],
+    [searchedBooks, isEmpty, onChangeSearch, shelves],
   );
 }

@@ -47,7 +47,7 @@ export default function Book(props: BookProps) {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <a className={classNames('dropdown-item text-danger')} href={`#none`} onClick={events.onClickMoveTo('none')}>
+                  <a className="dropdown-item" href={`#none`} onClick={events.onClickMoveTo('none')}>
                     None
                   </a>
                 </li>
@@ -69,6 +69,18 @@ export default function Book(props: BookProps) {
                     </a>
                   </li>
                 ))}
+                {states.book.shelf && states.book.shelf !== 'none' && (
+                  <>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href={`#none`} onClick={events.onClickAddTo('none')}>
+                        None
+                      </a>
+                    </li>
+                  </>
+                )}
               </>
             )}
           </ul>

@@ -15,7 +15,7 @@ export default function Search({ className }: SearchProps) {
     <div className={classNames('d-flex flex-column gap-3', className)}>
       <div
         className={classNames('page-title container-fluid px-sm-5 py-3 pb-4 bg-white position-sticky shadow-sm', {
-          'border-bottom': states.books.length,
+          'border-bottom': states.searchedBooks.length,
         })}>
         <div className="d-flex align-item-center">
           <Link className="btn btn-link" to="/">
@@ -34,7 +34,7 @@ export default function Search({ className }: SearchProps) {
           {states.isEmpty ? (
             <div className="flex-fill text-center">Not Found</div>
           ) : (
-            states.books.map((book) => <Book key={book.id} data={book} shelves={states.shelves} />)
+            states.searchedBooks.map((book) => <Book key={book.id} data={book} shelves={states.shelves} />)
           )}
         </div>
       </div>
