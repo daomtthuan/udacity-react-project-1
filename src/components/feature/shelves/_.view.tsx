@@ -9,8 +9,8 @@ export default function Shelves({ className }: ShelvesProps) {
 
   return (
     <div className={classNames('d-flex flex-column gap-4', className)}>
-      {states.bookShelves.map((bookShelf) => (
-        <Shelf key={bookShelf.id} data={bookShelf} />
+      {states.shelfPropsList.map((shelfProps) => (
+        <Shelf key={shelfProps.data.id} {...shelfProps} />
       ))}
     </div>
   );

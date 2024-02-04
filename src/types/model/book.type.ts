@@ -1,10 +1,12 @@
-export type Book = {
+type Book = {
   id: string;
   title: string;
-  authors: string[];
+  authors?: string[];
   imageLinks: {
     smallThumbnail: string;
     thumbnail: string;
   };
   shelf: string;
 };
+
+export default Book;

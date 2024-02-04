@@ -1,43 +1,83 @@
 import classNames from 'classnames';
 
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import useBook from './_.hook';
 import styles from './_.module.scss';
 import { BookProps } from './_.type';
 
-export default function Book({ data, className }: BookProps) {
+export default function Book(props: BookProps) {
+  const { shelves, className } = props;
+
+  const { states, events } = useBook(props);
+
   return (
-    <div className={classNames('card', styles.container, className)}>
-      <div className="card-header text-center">
-        <img src={data.imageLinks.smallThumbnail} className={classNames(styles.image, 'rounded')} alt={data.title} />
-      </div>
+    <div className={classNames(styles.container, 'd-flex flex-column gap-3', className)}>
+      <div className="text-center position-relative">
+        <img className={classNames(styles.image, 'rounded shadow')} src={states.book.imageLinks.thumbnail} alt={states.book.title} />
 
-      <div className="card-body">
-        <h5 className="card-title">{data.title}</h5>
-        <div className="card-text text-secondary">{data.authors.join(', ')}</div>
-      </div>
-
-      <div className="card-footer text-end">
-        <div className="dropdown">
-          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown button
+        <div className="dropdown position-absolute end-0 bottom-0">
+          <button
+            className={classNames(styles.dropdown, 'btn btn-primary text-light rounded-circle shadow')}
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <FontAwesomeIcon icon={faCaretDown} />
           </button>
-          <ul className="dropdown-menu">
-            <li>
-              <a className="dropdown-item" href="#">
-                Action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Another action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Something else here
-              </a>
-            </li>
+          <ul className="dropdown-menu dropdown-menu-end mt-1">
+            {states.isMoveMode ? (
+              <>
+                <li>
+                  <h6 className="dropdown-header text-secondary">Move to...</h6>
+                </li>
+                {shelves.map(({ id, displayName }) => (
+                  <li key={id}>
+                    <a
+                      className={classNames('dropdown-item', {
+                        active: states.book.shelf === id,
+                      })}
+                      href={`#${id}`}
+                      onClick={events.onClickMoveTo(id)}>
+                      {displayName}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <a className={classNames('dropdown-item text-danger')} href={`#none`} onClick={events.onClickMoveTo('none')}>
+                    None
+                  </a>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <h6 className="dropdown-header text-secondary">Add to...</h6>
+                </li>
+                {shelves.map(({ id, displayName }) => (
+                  <li key={id}>
+                    <a
+                      className={classNames('dropdown-item', {
+                        active: states.book.shelf === id,
+                      })}
+                      href={`#${id}`}
+                      onClick={events.onClickAddTo(id)}>
+                      {displayName}
+                    </a>
+                  </li>
+                ))}
+              </>
+            )}
           </ul>
         </div>
+      </div>
+
+      <div className="text-wrap mt-1">
+        <div className="fw-semibold">{states.book.title}</div>
+        <div className="text-secondary fs-7">{states.book.authors?.join(', ')}</div>
       </div>
     </div>
   );

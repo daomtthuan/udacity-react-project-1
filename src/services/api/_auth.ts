@@ -5,5 +5,7 @@ export function getToken() {
   }
 
   const randomStr = Math.random().toString(36);
-  return randomStr.substring(randomStr.length - 8);
+  const newToken = randomStr.substring(randomStr.length - 8);
+  localStorage.setItem('token', newToken);
+  return newToken;
 }

@@ -3,14 +3,13 @@ import classNames from 'classnames';
 import Book from '../book';
 import { ShelfProp } from './_.type';
 
-export default function Shelf({ data, className }: ShelfProp) {
+export default function Shelf({ data, bookPropsList, className }: ShelfProp) {
   return (
-    <div className={classNames(className)}>
-      <h3>{data.displayName}</h3>
-      <hr />
-      <div className="d-flex gap-3">
-        {data.books.map((book) => (
-          <Book key={book.id} data={book} />
+    <div className={classNames('d-flex flex-column gap-3', className)}>
+      <h3 className="mb-0">{data.displayName}</h3>
+      <div className="d-flex flex-wrap gap-5 border-top py-3 shadow-inset">
+        {bookPropsList.map((bookProps) => (
+          <Book key={bookProps.data.id} {...bookProps} />
         ))}
       </div>
     </div>

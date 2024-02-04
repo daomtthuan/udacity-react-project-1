@@ -1,6 +1,10 @@
 import { PropsWithClassName } from '~types/component/ui.type';
-import { BookShelf } from '~types/model/shelf.type';
+import Shelf from '~types/model/shelf.type';
+
+import { BookProps } from '../book';
 
 export type ShelfProp = PropsWithClassName<{
-  data: BookShelf;
+  data: Shelf;
+
+  bookPropsList: BookProps[];
 }>;

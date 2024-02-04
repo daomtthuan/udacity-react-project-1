@@ -6,16 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function DefaultLayout() {
   return (
     <>
-      <nav className="navbar navbar-expand-sm bg-primary bg-opacity-25 shadow sticky-top">
-        <div className="container-fluid px-5">
-          <h1 className="navbar-brand text-primary fw-bold mb-0">
-            <Link className="text-decoration-none" to="/">
+      <nav className="navbar navbar-expand-sm bg-primary shadow sticky-top" data-bs-theme="dark">
+        <div className="container-fluid px-sm-5">
+          <h1 className="navbar-brand fw-bold mb-0">
+            <Link className="text-decoration-none text-light" to="/">
               Book Tracking
             </Link>
           </h1>
 
           <button
-            className="btn btn-primary text-light d-sm-none"
+            className="btn btn-light d-sm-none"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbar-nav"
@@ -29,7 +29,7 @@ export default function DefaultLayout() {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
-                  Home
+                  My Reads
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -42,9 +42,7 @@ export default function DefaultLayout() {
         </div>
       </nav>
 
-      <div className="container-fluid px-5 py-4">
-        <Outlet />
-      </div>
+      <Outlet />
     </>
   );
 }

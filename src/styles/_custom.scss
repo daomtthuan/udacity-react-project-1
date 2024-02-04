@@ -1,3 +1,16 @@
 .nav-link.active {
   font-weight: $font-weight-semibold;
 }
+
+.fs-7 {
+  font-size: $font-size-base * 0.85;
+}
+
+.page-title {
+  top: 60px;
+  z-index: 9999;
+}
+
+.shadow-inset {
+  box-shadow: $box-shadow-inset;
+}

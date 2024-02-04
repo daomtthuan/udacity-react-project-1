@@ -1,8 +1,19 @@
+@import '~styles/required';
+
 .container {
-  width: 16rem;
+  width: 12rem;
 }
 
 .image {
   height: 16rem;
-  width: auto;
+  max-width: 12rem;
+}
+
+.dropdown {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  margin-right: calc(-2.5rem / 2);
+  margin-bottom: calc(-2.5rem / 2);
+  z-index: 1;
 }
